@@ -1,60 +1,55 @@
-// Configuración de Firebase
-const firebaseConfig = {
-    apiKey: "TU_API_KEY",
-    authDomain: "TU_AUTH_DOMAIN",
-    projectId: "TU_PROJECT_ID",
-    storageBucket: "TU_STORAGE_BUCKET",
-    messagingSenderId: "TU_MESSAGING_SENDER_ID",
-    appId: "TU_APP_ID"
-};
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
+// Crear cuenta
+function crearCuenta() {
+  const usuario = document.getElementById("nuevo-usuario").value;
+  const clave = document.getElementById("nueva-clave").value;
 
-// Función para registrar usuarios
-function register() {
-    const username = document.getElementById("register-username").value;
-    const password = document.getElementById("register-password").value;
-
-    auth.createUserWithEmailAndPassword(username + "@foro.com", password)
-        .then(() => {
-            alert("Registro exitoso, ahora inicia sesión");
-            showLogin();
-        })
-        .catch(error => alert(error.message));
+  if (usuario && clave) {
+    localStorage.setItem(usuario, clave);
+    alert("Cuenta creada. Ahora inicia sesión.");
+  } else {
+    alert("Completa los campos para registrarte.");
+  }
 }
 
-// Función para iniciar sesión
-function login() {
-    const username = document.getElementById("login-username").value;
-    const password = document.getElementById("login-password").value;
+// Iniciar sesión
+function iniciarSesion() {
+  const usuario = document.getElementById("login-usuario").value;
+  const clave = document.getElementById("login-clave").value;
+  const claveGuardada = localStorage.getItem(usuario);
 
-    auth.signInWithEmailAndPassword(username + "@foro.com", password)
-        .then(() => window.location.href = "foro.html")
-        .catch(error => alert(error.message));
+  if (clave === claveGuardada) {
+    localStorage.setItem("usuarioActivo", usuario);
+    window.location.href = "foro.html";
+  } else {
+    alert("Usuario o contraseña incorrectos.");
+  }
 }
 
-// Enviar mensajes al foro
-function sendMessage() {
-    const message = document.getElementById("message-input").value;
-    db.collection("messages").add({
-        user: auth.currentUser.email.split("@")[0],
-        text: message,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    });
+// Mostrar nombre en foro
+if (document.getElementById("usuario-nombre")) {
+  const usuario = localStorage.getItem("usuarioActivo");
+  document.getElementById("usuario-nombre").textContent = usuario;
+
+  cargarMensajes();
 }
 
-// Mostrar mensajes en tiempo real
-db.collection("messages").orderBy("timestamp").onSnapshot(snapshot => {
-    const messagesContainer = document.getElementById("messages");
-    messagesContainer.innerHTML = "";
-    snapshot.forEach(doc => {
-        const msg = doc.data();
-        messagesContainer.innerHTML += `<div class="message"><strong>${msg.user}:</strong> ${msg.text}</div>`;
-    });
-});
+// Enviar mensaje
+function enviarMensaje() {
+  const usuario = localStorage.getItem("usuarioActivo");
+  const mensaje = document.getElementById("mensaje").value;
 
-// Cerrar sesión
-function logout() {
-    auth.signOut().then(() => window.location.href = "index.html");
+  if (mensaje) {
+    const mensajes = JSON.parse(localStorage.getItem("mensajes") || "[]");
+    mensajes.push({ usuario, mensaje });
+    localStorage.setItem("mensajes", JSON.stringify(mensajes));
+    cargarMensajes();
+    document.getElementById("mensaje").value = "";
+  }
+}
+
+// Mostrar mensajes
+function cargarMensajes() {
+  const contenedor = document.getElementById("mensajes");
+  const mensajes = JSON.parse(localStorage.getItem("mensajes") || "[]");
+  contenedor.innerHTML = mensajes.map(m => `<p><b>${m.usuario}:</b> ${m.mensaje}</p>`).join("");
 }

@@ -1,55 +1,50 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f3eacb; /* Color manteca */
-    text-align: center;
-    padding: 20px;
+  font-family: sans-serif;
+  background-color: #f5e9d3;
+  color: #333;
+  padding: 20px;
 }
 
-.container {
-    background-color: #fdf6e3;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    display: inline-block;
+h1 {
+  color: #8a5a2d;
 }
 
-input, button {
-    display: block;
-    width: 80%;
-    margin: 10px auto;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
+#login, #registro {
+  margin-bottom: 30px;
+  padding: 15px;
+  background-color: #fff6e0;
+  border: 1px solid #d8b179;
+  border-radius: 8px;
+  width: 300px;
+}
+
+input {
+  display: block;
+  margin: 10px 0;
+  padding: 8px;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 button {
-    background-color: #d4a373;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
+  padding: 8px 12px;
+  background-color: #d8b179;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
 }
 
-button:hover {
-    background-color: #c48150;
+#mensajes {
+  margin-bottom: 20px;
+  background: #fff6e0;
+  padding: 10px;
+  border-radius: 8px;
+  max-height: 300px;
+  overflow-y: auto;
 }
 
-#chat-container {
-    text-align: left;
-    max-width: 500px;
-    margin: auto;
-}
-
-#messages {
-    background: #fff;
-    padding: 10px;
-    height: 300px;
-    overflow-y: scroll;
-    border-radius: 5px;
-}
-
-.message {
-    padding: 8px;
-    margin: 5px;
-    background: #fffae6;
-    border-radius: 5px;
+#mensajes p {
+  margin: 5px 0;
 }
